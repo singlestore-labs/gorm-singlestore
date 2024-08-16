@@ -1,4 +1,4 @@
-package mysql
+package singlestore
 
 import (
 	"database/sql"
@@ -311,7 +311,7 @@ func (m Migrator) ColumnTypes(value interface{}) ([]gorm.ColumnType, error) {
 		var (
 			currentDatabase, table = m.CurrentSchema(stmt, stmt.Table)
 			columnTypeSQL          = "SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale "
-			rows, err              = m.DB.Session(&gorm.Session{}).Table(table).Limit(1).Rows()
+			rows, err              = m.DB.Session(&gorm.Session{}).Table(table).Rows()
 		)
 
 		if err != nil {
@@ -410,7 +410,7 @@ func (m Migrator) ColumnTypes(value interface{}) ([]gorm.ColumnType, error) {
 func (m Migrator) CurrentDatabase() (name string) {
 	baseName := m.Migrator.CurrentDatabase()
 	m.DB.Raw(
-		"SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE ? ORDER BY SCHEMA_NAME=? DESC,SCHEMA_NAME limit 1",
+		"SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE ? ORDER BY SCHEMA_NAME=? DESC,SCHEMA_NAME LIMIT 1",
 		baseName+"%", baseName).Scan(&name)
 	return
 }

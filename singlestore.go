@@ -1,4 +1,4 @@
-package mysql
+package singlestore
 
 import (
 	"context"
@@ -63,7 +63,8 @@ var (
 	// DeleteClauses delete clauses
 	DeleteClauses = []string{"DELETE", "FROM", "WHERE", "ORDER BY", "LIMIT"}
 
-	defaultDatetimePrecision = 3
+	// SingleStore only supports 0 or 6 precision for datetime fields
+	defaultDatetimePrecision = 6
 )
 
 func Open(dsn string) gorm.Dialector {

@@ -1,4 +1,4 @@
-package mysql
+package singlestore
 
 import (
 	"github.com/go-sql-driver/mysql"
