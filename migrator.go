@@ -193,6 +193,11 @@ func (m Migrator) TiDBVersion() (isTiDB bool, major, minor, patch int, err error
 	return
 }
 
+func (m Migrator) HasForeignKey(value interface{}, field string) bool {
+	// Always return false since SingleStore doesn't support foreign keys
+	return false
+}
+
 func (m Migrator) RenameColumn(value interface{}, oldName, newName string) error {
 	return m.RunWithValue(value, func(stmt *gorm.Statement) error {
 		if !m.Dialector.DontSupportRenameColumn {

@@ -133,13 +133,7 @@ func (dialector Dialector) Initialize(db *gorm.DB) (err error) {
 			return err
 		}
 
-		if strings.Contains(dialector.ServerVersion, "MariaDB") {
-			dialector.Config.DontSupportRenameIndex = true
-			dialector.Config.DontSupportRenameColumn = true
-			dialector.Config.DontSupportForShareClause = true
-			dialector.Config.DontSupportNullAsDefaultValue = true
-			withReturning = checkVersion(dialector.ServerVersion, "10.5")
-		} else if strings.HasPrefix(dialector.ServerVersion, "5.6.") {
+		if strings.HasPrefix(dialector.ServerVersion, "5.6.") {
 			dialector.Config.DontSupportRenameIndex = true
 			dialector.Config.DontSupportRenameColumn = true
 			dialector.Config.DontSupportForShareClause = true
@@ -154,10 +148,6 @@ func (dialector Dialector) Initialize(db *gorm.DB) (err error) {
 			dialector.Config.DontSupportRenameColumn = true
 			dialector.Config.DontSupportForShareClause = true
 			dialector.Config.DontSupportDropConstraint = true
-		}
-
-		if strings.Contains(dialector.ServerVersion, "TiDB") {
-			dialector.Config.DontSupportRenameColumnUnique = true
 		}
 	}
 
@@ -184,6 +174,9 @@ func (dialector Dialector) Initialize(db *gorm.DB) (err error) {
 	}
 
 	callbacks.RegisterDefaultCallbacks(db, callbackConfig)
+
+	db.Callback().Create().Replace("gorm:create_foreign_key", func(*gorm.DB) {})
+	db.Callback().Update().Replace("gorm:update_foreign_key", func(*gorm.DB) {})
 
 	for k, v := range dialector.ClauseBuilders() {
 		db.ClauseBuilders[k] = v
