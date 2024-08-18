@@ -48,7 +48,7 @@ func (m Migrator) FullDataTypeOf(field *schema.Field) clause.Expr {
 }
 
 // MigrateColumnUnique migrate column's UNIQUE constraint.
-// In MySQL, ColumnType's Unique is affected by UniqueIndex, so we have to take care of the UniqueIndex.
+// ColumnType's Unique is affected by UniqueIndex, so we have to take care of the UniqueIndex.
 func (m Migrator) MigrateColumnUnique(value interface{}, field *schema.Field, columnType gorm.ColumnType) error {
 	unique, ok := columnType.Unique()
 	if !ok || field.PrimaryKey {

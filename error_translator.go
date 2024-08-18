@@ -6,7 +6,9 @@ import (
 	"gorm.io/gorm"
 )
 
-// The error codes to map mysql errors to gorm errors, here is the mysql error codes reference https://dev.mysql.com/doc/mysql-errors/8.0/en/server-error-reference.html.
+// The error codes to map singlestore and mysql errors to gorm errors.
+// Here is the singlestore error codes reference https://docs.singlestore.com/cloud/reference/troubleshooting-reference/query-errors/
+// Here is the mysql error codes reference https://dev.mysql.com/doc/mysql-errors/8.0/en/server-error-reference.html.
 var errCodes = map[uint16]error{
 	1062: gorm.ErrDuplicatedKey,
 }
