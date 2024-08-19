@@ -18,7 +18,7 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "gorm:gorm@tcp(localhost:3306)/gorm?charset=utf8&parseTime=True&loc=Local"
+dsn := "root:password@tcp(localhost:3306)/gorm?charset=utf8&parseTime=True&loc=Local"
 db, err := gorm.Open(singlestore.Open(dsn), &gorm.Config{})
 ```
 
