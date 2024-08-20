@@ -120,6 +120,14 @@ func (dialector Dialector) Initialize(db *gorm.DB) (err error) {
 	if dialector.Conn != nil {
 		db.ConnPool = dialector.Conn
 	} else {
+		cfg, err := mysql.ParseDSN(dialector.DSN)
+		if err != nil {
+			return err
+		}
+
+		cfg.InterpolateParams = true
+
+		dialector.DSN = cfg.FormatDSN()
 		db.ConnPool, err = sql.Open(dialector.DriverName, dialector.DSN)
 		if err != nil {
 			return err
