@@ -316,7 +316,7 @@ func (m Migrator) ColumnTypes(value interface{}) ([]gorm.ColumnType, error) {
 		var (
 			currentDatabase, table = m.CurrentSchema(stmt, stmt.Table)
 			columnTypeSQL          = "SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale "
-			rows, err              = m.DB.Session(&gorm.Session{}).Table(table).Rows()
+			rows, err              = m.DB.Session(&gorm.Session{}).Table(table).Limit(1).Rows()
 		)
 
 		if err != nil {
