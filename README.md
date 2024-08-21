@@ -10,7 +10,7 @@ Make sure you already have [gorm](https://github.com/go-gorm/gorm) installed. Th
 go get github.com/singlestore-labs/gorm-singlestore
 ```
 
-This uses [go-sql-driver/singlestore](https://github.com/go-sql-driver/singlestore) under the hood.
+This uses [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql) under the hood.
 
 ## Quick Start
 
