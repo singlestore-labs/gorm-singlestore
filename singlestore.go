@@ -1,7 +1,6 @@
 package singlestore
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"math"
@@ -135,29 +134,14 @@ func (dialector Dialector) Initialize(db *gorm.DB) (err error) {
 	}
 
 	withReturning := false
-	if !dialector.Config.SkipInitializeWithVersion {
-		err = db.ConnPool.QueryRowContext(context.Background(), "SELECT VERSION()").Scan(&dialector.ServerVersion)
-		if err != nil {
-			return err
-		}
 
-		if strings.HasPrefix(dialector.ServerVersion, "5.6.") {
-			dialector.Config.DontSupportRenameIndex = true
-			dialector.Config.DontSupportRenameColumn = true
-			dialector.Config.DontSupportForShareClause = true
-			dialector.Config.DontSupportDropConstraint = true
-		} else if strings.HasPrefix(dialector.ServerVersion, "5.7.") {
-			dialector.Config.DontSupportRenameColumn = true
-			dialector.Config.DontSupportForShareClause = true
-			dialector.Config.DontSupportDropConstraint = true
-		} else if strings.HasPrefix(dialector.ServerVersion, "5.") {
-			dialector.Config.DisableDatetimePrecision = true
-			dialector.Config.DontSupportRenameIndex = true
-			dialector.Config.DontSupportRenameColumn = true
-			dialector.Config.DontSupportForShareClause = true
-			dialector.Config.DontSupportDropConstraint = true
-		}
-	}
+	dialector.Config.DontSupportRenameIndex = true
+	dialector.Config.DontSupportRenameColumn = true
+	dialector.Config.DontSupportRenameColumnUnique = true
+	dialector.Config.DontSupportForShareClause = true
+	dialector.Config.DontSupportDropConstraint = true
+	dialector.Config.DontSupportNullAsDefaultValue = false
+	dialector.Config.DisableDatetimePrecision = true
 
 	// register callbacks
 	callbackConfig := &callbacks.Config{
